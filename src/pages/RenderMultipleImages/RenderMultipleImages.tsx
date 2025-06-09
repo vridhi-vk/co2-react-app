@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { co2 } from "@tgwf/co2";
+import { useNavigate } from "react-router-dom";
 
 interface ImageData {
   name: string;
@@ -23,6 +24,7 @@ const RenderMultipleImages: React.FC = () => {
   const [reduction, setReduction] = useState<number>(0);
 
   const co2Estimator = new co2();
+  const navigate = useNavigate();
 
   function calculatePercentageReduction(
     oldValue: number,
@@ -85,33 +87,31 @@ const RenderMultipleImages: React.FC = () => {
   };
 
   return (
-    <div>
-      <h2>Upload Images</h2>
+    <div className="render-multi-container">
+      <div className="back-button-row">
+        <button className="back-button" onClick={() => navigate(-1)}>
+          ← Back
+        </button>
+      </div>
+      <h2 className="render-multi-header">Upload Images</h2>
       <input
         type="file"
         multiple
-        accept=".jpg,.png,.webp, .svg"
+        accept=".jpg,.png,.webp,.svg"
         onChange={handleUpload}
       />
 
-      <div
-        style={{
-          display: "flex",
-          marginTop: "20px",
-          borderRight: "1px solid black",
-        }}
-      >
-        <div style={{ flex: 1, padding: "10px" }}>
-          <h3>JPG Images</h3>
+      <div className="render-multi-flex">
+        <div className="render-multi-col">
+          <h3>JPG/ PNG Images</h3>
           {jpgImages.map((img, i) => (
             <img
               key={i}
               src={img.url}
               alt={img.name}
-              style={{ width: "50%", marginBottom: "10px" }}
+              className="render-multi-img"
             />
           ))}
-          <p>JPEG/PNG Images</p>
           <p>
             <strong>Estimated CO₂: </strong>
             {emissions.jpg.toFixed(6)} grams
@@ -122,17 +122,16 @@ const RenderMultipleImages: React.FC = () => {
           </p>
         </div>
 
-        <div style={{ flex: 1, padding: "10px" }}>
+        <div className="render-multi-col">
           <h3>WEBP Images</h3>
           {webpImages.map((img, i) => (
             <img
               key={i}
               src={img.url}
               alt={img.name}
-              style={{ width: "50%", marginBottom: "10px" }}
+              className="render-multi-img"
             />
           ))}
-          <p>WEBP Images</p>
           <p>
             <strong>Estimated CO₂: </strong>
             {emissions.webp.toFixed(6)} grams
@@ -143,11 +142,10 @@ const RenderMultipleImages: React.FC = () => {
           </p>
         </div>
       </div>
-      <div>
-        <p>
-          {`The percentage reduction in carbon emissions is:
-          ${reduction ? reduction.toFixed(2) : "0"}%`}
-        </p>
+      <div className="render-multi-summary">
+        {`The percentage reduction in carbon emissions is: ${
+          reduction ? reduction.toFixed(2) : "0"
+        }%`}
       </div>
     </div>
   );
